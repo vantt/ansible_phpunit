@@ -1,0 +1,14 @@
+---
+
+- name: Check PHP is already installed
+  shell: php --version
+  register: php_exist
+  ignore_errors: yes
+
+- name: Fail if PHP was not properly installed
+  fail: msg="PHP was not properly installed. Please have a working php-cli."
+  when: "'not found' in php_exist.stderr"
+
+- name: Install phpunit
+  sudo: yes
+  get_url: url=https://phar.phpunit.de/phpunit.phar dest=/usr/local/bin/phpunit mode=555 
